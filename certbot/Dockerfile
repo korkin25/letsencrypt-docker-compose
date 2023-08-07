@@ -1,11 +1,17 @@
 FROM certbot/certbot:v2.6.0
 
-RUN apk add --no-cache jq
+RUN apk update \
+    && apk upgrade \
+    && apk --no-cache add jq \
+    && rm -rf /var/cache/apk/*
 
-WORKDIR /letsencrypt-docker-compose
+WORKDIR /scripts
 
-COPY start-certbot.sh certbot-certonly.sh certbot-delete.sh certbot-force-renew.sh ./
-RUN chmod +x start-certbot.sh certbot-certonly.sh certbot-delete.sh certbot-force-renew.sh
+# Copy all shell scripts to the current directory
+COPY scripts/*.sh ./
 
-ENTRYPOINT []
-CMD ["/letsencrypt-docker-compose/start-certbot.sh"]
+# Make all shell scripts executable
+RUN chmod +x *.sh
+
+# Run the start-certbot.sh script as the container's command
+CMD ["./start-certbot.sh"]
