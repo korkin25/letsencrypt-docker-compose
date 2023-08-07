@@ -24,4 +24,4 @@ RUN chmod +x *.sh
 EXPOSE 80
 
 # Define the command to start the supervisor process using the configuration file
-CMD ["supervisord", -n, "-c", "/etc/supervisord.conf"]
+CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
