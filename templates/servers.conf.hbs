@@ -13,8 +13,11 @@ server {
 }
 
 server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2;
+    listen 443 ssl;
+    listen [::]:443 ssl;
+
+    http2 on;
+
     server_name {{domain}} {{#if wwwSubdomain}}www.{{domain}}{{/if}};
 
     include /etc/nginx/ssl/{{domain}}.conf;
