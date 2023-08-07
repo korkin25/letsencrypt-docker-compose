@@ -18,9 +18,10 @@ EOF
 
 case $1 in
   config)
-    CMD=(docker compose run --rm cli)
-    export CURRENT_USER="$(id -u):$(id -g)"
-    export DOCKER_GROUP="$(getent group docker | cut -d: -f3)"
+    CMD=(docker-compose run --rm cli)
+    CURRENT_USER="$(id -u):$(id -g)"
+    DOCKER_GROUP="$(getent group docker | cut -d: -f3)"
+    export CURRENT_USER DOCKER_GROUP
     shift
     while [[ $# -gt 0 ]]; do
       case $1 in
@@ -37,7 +38,7 @@ case $1 in
     done
     ;;
   up)
-    CMD=(docker compose up -d)
+    CMD=(docker-compose up -d)
     shift
     while [[ $# -gt 0 ]]; do
       case $1 in
@@ -53,7 +54,7 @@ case $1 in
     done
     ;;
   build)
-    CMD=(docker compose --profile config build)
+    CMD=(docker-compose --profile config build)
     shift
     while [[ $# -gt 0 ]]; do
       case $1 in
