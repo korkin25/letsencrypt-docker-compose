@@ -65,23 +65,9 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
-  cron:
-    build: ./cron
-    image: evgeniy-khyst/cron
-    environment:
-      - COMPOSE_PROJECT_NAME
-      - DRY_RUN
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./:/workdir:ro
-    depends_on:
-      certbot:
-        condition: service_healthy
-    restart: unless-stopped
-
   # Remove if you don't use PHP
   php-fpm:
-    image: php:fpm-alpine
+    image: php:8.1.22-fpm-alpine
     volumes:
       - ./html:/var/www/html:ro
 
