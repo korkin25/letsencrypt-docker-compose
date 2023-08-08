@@ -1,3 +1,5 @@
+FROM common-configs as common-configs
+
 # Use the official Nginx image as the base image
 FROM nginx:1.25.1-alpine
 
