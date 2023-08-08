@@ -26,6 +26,12 @@ services:
     profiles:
       - config
 
+  common-configs:
+    build: ./common-configs
+    image: common-configs
+    deploy:
+      replicas: 0
+
   nginx:
     <<: *defaults
     build: ./nginx
