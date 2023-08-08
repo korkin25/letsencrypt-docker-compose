@@ -8,7 +8,7 @@ RUN apk update \
     && rm -rf /var/cache/apk/*
 
 ENV RENEW_CERTS_PERIODICITY=15min
-COPY scripts/renew_certs /etc/periodic/${RENEW_CERTS_PERIODICITY}/reload_certs
+COPY scripts/reload_certs /etc/periodic/${RENEW_CERTS_PERIODICITY}/reload_certs
 RUN chmod +x /etc/periodic/${RENEW_CERTS_PERIODICITY}/reload_certs
 
 # Set the working directory for the configuration files and copy them to the image
