@@ -58,6 +58,17 @@ for domain in $domains; do
   if [ "$DRY_RUN" = "true" ]; then
     echo "Dry run is enabled"
   else
+    echo 'DEBIG: ' certbot certonly \
+      --webroot \
+      -w "/var/www/certbot/${domain}" \
+      -d "$domain" \
+      $www_subdomain_arg \
+      $test_cert_arg \
+      $email_arg \
+      --rsa-key-size "${rsa_key_size}" \
+      --agree-tos \
+      --noninteractive \
+      --verbose || true
     certbot certonly \
       --webroot \
       -w "/var/www/certbot/${domain}" \
