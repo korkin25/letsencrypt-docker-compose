@@ -1,5 +1,14 @@
 version: "3"
 
+x-defaults: &defaults
+  restart: unless-stopped
+  environment:
+    - DRY_RUN
+  healthcheck:
+    interval: 30s
+    timeout: 30s
+    start_period: 30s
+
 services:
   cli:
     build: ./cli
@@ -18,10 +27,9 @@ services:
       - config
 
   nginx:
+    <<: *defaults
     build: ./nginx
     image: evgeniy-khyst/nginx
-    environment:
-      - DRY_RUN
     volumes:
       - ./config.json:/letsencrypt-docker-compose/config.json:ro
       - ./nginx-conf/nginx.conf:/etc/nginx/nginx.conf:ro
@@ -35,17 +43,12 @@ services:
       - "443:443"
     healthcheck:
       test: ["CMD", "nc", "-z", "nginx", "80"]
-      interval: 30s
-      timeout: 30s
-      start_period: 30s
       retries: 10
-    restart: unless-stopped
 
   certbot:
+    <<: *defaults
     build: ./certbot
     image: evgeniy-khyst/certbot
-    environment:
-      - DRY_RUN
     volumes:
       - ./config.json:/letsencrypt-docker-compose/config.json:ro
       - letsencrypt_certs:/etc/letsencrypt
@@ -56,26 +59,20 @@ services:
           "CMD-SHELL",
           'test -n "$$(ls -A /etc/letsencrypt/live/)" || test "$$DRY_RUN" == "true" || exit 1',
         ]
-      interval: 30s
-      timeout: 30s
-      start_period: 30s
       retries: 5
     depends_on:
       nginx:
         condition: service_healthy
-    restart: unless-stopped
 
-  # Remove if you don't use PHP
   php-fpm:
     image: php:8.1.22-fpm-alpine
     volumes:
       - ./html:/var/www/html:ro
 
-  # Replace with your backend image or remove
   example-backend:
+    <<: *defaults
     build: ./examples/nodejs-backend
     image: evgeniy-khyst/expressjs-helloworld
-    restart: unless-stopped
 
 volumes:
   nginx_conf_ssl:

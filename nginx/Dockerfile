@@ -13,7 +13,7 @@ RUN chmod +x /etc/periodic/${RENEW_CERTS_PERIODICITY}/renew_certs
 
 # Set the working directory for the configuration files and copy them to the image
 WORKDIR /configs
-COPY configs/* ./
+COPY scripts/ ./scripts/
 
 # Set the working directory for the scripts and copy them to the image
 WORKDIR /scripts
@@ -24,4 +24,4 @@ RUN chmod +x *.sh
 EXPOSE 80
 
 # Define the command to start the supervisor process using the configuration file
-CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
+CMD ["supervisord", "-n", "-c", "/configs/supervisord.conf"]
