@@ -1,0 +1,13 @@
+#!/bin/sh
+
+TRIGGER_RELOAD="/reload_trigger/reload"
+
+if [ "$DRY_RUN" = "true" ]; then
+  echo "Dry run is enabled"
+  exit 0
+fi
+
+echo "Renewing Let's Encrypt Certificates... $(date)"
+certbot certbot renew --no-random-sleep-on-renew
+echo "iMake trigger to reload Nginx configuration"
+touch "${TRIGGER_RELOAD}"

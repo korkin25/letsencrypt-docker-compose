@@ -1,0 +1,15 @@
+#!/bin/sh
+
+TRIGGER_RELOAD="/reload_trigger/reload"
+
+if [ "$DRY_RUN" = "true" ]; then
+  echo "Dry run is enabled"
+  exit 0
+fi
+
+if [ -f "${TRIGGER_RELOAD}" ]; then
+  echo "Found trigger to reload Nginx configuration"
+  rm "${TRIGGER_RELOAD}"
+  nginx -s reload
+fi
+
