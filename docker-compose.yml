@@ -32,6 +32,7 @@ services:
     image: evgeniy-khyst/nginx
     volumes:
       - ./config.json:/configs/config.json:ro
+      - ./reload_trigger:/reload_trigger
       - ./nginx-conf/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx-conf/conf.d:/etc/nginx/conf.d:ro
       - ./html:/var/www/html:ro
@@ -53,6 +54,7 @@ services:
       - ./config.json:/configs/config.json:ro
       - ./letsencrypt_certs:/etc/letsencrypt
       - ./certbot_acme_challenge:/var/www/certbot
+      - ./reload_trigger:/reload_trigger
     healthcheck:
       test:
         [
@@ -78,3 +80,4 @@ volumes:
   nginx_conf_ssl:
   letsencrypt_certs:
   certbot_acme_challenge:
+  reload_trigger:
