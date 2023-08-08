@@ -5,10 +5,12 @@ RUN apk update && \
     apk --no-cache add jq && \
     rm -rf /var/cache/apk/*
 
+# Create the scripts directory and set it as the working directory
+RUN mkdir /scripts
 WORKDIR /scripts
 
-# Copy all shell scripts to the current directory
-COPY certbot-certonly.sh  certbot-delete.sh  certbot-force-renew.sh  start-certbot.sh ./
+# Copy all shell scripts to the scripts directory
+COPY scripts/certbot-certonly.sh scripts/certbot-delete.sh scripts/certbot-force-renew.sh scripts/start-certbot.sh ./
 
 # Make all shell scripts executable
 RUN chmod +x *.sh
