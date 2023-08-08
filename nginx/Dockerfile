@@ -13,7 +13,7 @@ RUN chmod +x /etc/periodic/${RENEW_CERTS_PERIODICITY}/renew_certs
 
 # Set the working directory for the configuration files and copy them to the image
 WORKDIR /configs
-COPY scripts/ ./scripts/
+COPY configs/ ./
 
 # Set the working directory for the scripts and copy them to the image
 WORKDIR /scripts
