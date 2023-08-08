@@ -35,9 +35,9 @@ services:
       - ./nginx-conf/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx-conf/conf.d:/etc/nginx/conf.d:ro
       - ./html:/var/www/html:ro
-      - nginx_conf_ssl:/etc/nginx/ssl
-      - letsencrypt_certs:/etc/letsencrypt
-      - certbot_acme_challenge:/var/www/certbot
+      - ./nginx_conf_ssl:/etc/nginx/ssl
+      - ./letsencrypt_certs:/etc/letsencrypt
+      - ./certbot_acme_challenge:/var/www/certbot
     ports:
       - "80:80"
       - "443:443"
@@ -51,8 +51,8 @@ services:
     image: evgeniy-khyst/certbot
     volumes:
       - ./config.json:/configs/config.json:ro
-      - letsencrypt_certs:/etc/letsencrypt
-      - certbot_acme_challenge:/var/www/certbot
+      - ./letsencrypt_certs:/etc/letsencrypt
+      - ./certbot_acme_challenge:/var/www/certbot
     healthcheck:
       test:
         [
