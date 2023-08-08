@@ -4,3 +4,4 @@ nginx-conf/
 !nginx-conf/conf.d/upstreams.conf
 !nginx-conf/conf.d/includes/.vscode/
 .vscode/
+*.swp
