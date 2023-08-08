@@ -14,4 +14,4 @@ COPY scripts/*.sh ./
 RUN chmod +x *.sh
 
 # Run the start-certbot.sh script as the container's command
-CMD ["./start-certbot.sh"]
+CMD ["/scripts/start-certbot.sh"]
