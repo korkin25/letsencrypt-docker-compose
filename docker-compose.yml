@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3"
 
 x-defaults: &defaults
   restart: unless-stopped
@@ -14,9 +14,18 @@ services:
     build:
       context: ./cli
     image: ${DOCKER_IMAGE_USER:-evgeniy-khyst}/letsencrypt-docker-compose-cli
+    user: ${CURRENT_USER}
+    group_add:
+      - ${DOCKER_GROUP}
+    environment:
+      - COMPOSE_PROJECT_NAME
+      - CURRENT_USER
+      - DOCKER_GROUP
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./:/workdir
+    profiles:
+      - config
 
   common-configs:
     build:
@@ -30,7 +39,6 @@ services:
     build:
       context: ./nginx
     image: ${DOCKER_IMAGE_USER:-evgeniy-khyst}/nginx
-    user: "${CURRENT_USER}:${DOCKER_GROUP}"
     volumes:
       - ./config.json:/configs/config.json:ro
       - ./reload_trigger:/reload_trigger
@@ -84,9 +92,3 @@ volumes:
   letsencrypt_certs:
   certbot_acme_challenge:
   reload_trigger:
-
-profiles:
-  config:
-    services:
-      - cli
-
