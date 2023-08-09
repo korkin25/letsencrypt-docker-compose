@@ -11,31 +11,26 @@ x-defaults: &defaults
 
 services:
   cli:
-    build: ./cli
-    image: evgeniy-khyst/letsencrypt-docker-compose-cli
-    user: ${CURRENT_USER}
-    group_add:
-      - ${DOCKER_GROUP}
-    environment:
-      - COMPOSE_PROJECT_NAME
-      - CURRENT_USER
-      - DOCKER_GROUP
+    build:
+      context: ./cli
+    image: ${DOCKER_IMAGE_USER:-evgeniy-khyst}/letsencrypt-docker-compose-cli
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./:/workdir
-    profiles:
-      - config
 
   common-configs:
-    build: ./common-configs
+    build:
+      context: ./common-configs
     image: common-configs
     deploy:
       replicas: 0
 
   nginx:
     <<: *defaults
-    build: ./nginx
-    image: evgeniy-khyst/nginx
+    build:
+      context: ./nginx
+    image: ${DOCKER_IMAGE_USER:-evgeniy-khyst}/nginx
+    user: "${CURRENT_USER}:${DOCKER_GROUP}"
     volumes:
       - ./config.json:/configs/config.json:ro
       - ./reload_trigger:/reload_trigger
@@ -54,8 +49,9 @@ services:
 
   certbot:
     <<: *defaults
-    build: ./certbot
-    image: evgeniy-khyst/certbot
+    build:
+      context: ./certbot
+    image: ${DOCKER_IMAGE_USER:-evgeniy-khyst}/certbot
     volumes:
       - ./config.json:/configs/config.json:ro
       - ./letsencrypt_certs:/etc/letsencrypt
@@ -79,11 +75,18 @@ services:
 
   example-backend:
     <<: *defaults
-    build: ./examples/nodejs-backend
-    image: evgeniy-khyst/expressjs-helloworld
+    build:
+      context: ./examples/nodejs-backend
+    image: ${DOCKER_IMAGE_USER:-evgeniy-khyst}/expressjs-helloworld
 
 volumes:
   nginx_conf_ssl:
   letsencrypt_certs:
   certbot_acme_challenge:
   reload_trigger:
+
+profiles:
+  config:
+    services:
+      - cli
+
