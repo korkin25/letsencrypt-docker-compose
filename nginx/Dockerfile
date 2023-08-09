@@ -15,6 +15,10 @@ RUN chmod +x /etc/periodic/${RENEW_CERTS_PERIODICITY}/reload_certs
 
 # Set the working directory for the configuration files and copy them to the image
 WORKDIR /configs
+
+COPY --from=common-configs /configs/* ./
+RUN ls -l /configs/
+
 COPY configs/ ./
 
 # Create the scripts directory and set it as the working directory
