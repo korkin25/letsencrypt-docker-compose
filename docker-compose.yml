@@ -90,9 +90,3 @@ profiles:
     services:
       - cli
 
-  production:
-    services:
-      - nginx
-      - certbot
-      - php-fpm
-      - example-backend
